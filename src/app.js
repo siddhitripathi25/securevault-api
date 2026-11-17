@@ -2,12 +2,15 @@
 import express from "express";
 import notesRoutes from "./routes/notes.route.js";
 
-import { requestId,rateLimiter,securityHeaders } from "express-api-guard";
+import { requestId,rateLimiter,securityHeaders,ipGuard } from "express-api-guard";
 
 const app = express();
 
 app.use(requestId());
 app.use(securityHeaders());
+app.use(ipGuard({
+    blockedIPs: []
+}));
 app.use(rateLimiter({
     windowMs: 60 * 1000,
     max: 5
